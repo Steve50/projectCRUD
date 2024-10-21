@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
@@ -15,7 +17,10 @@
         <div class="content">
             <div class="card">
                 <article>
-                    <button class="button is-primary">Nueva tarea</button>
+                    <button id="popover-button" class="button is-info is-pulled-right">
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span></button>
                 </article>
                 <article>
                     <table class="table full-width-table">
@@ -39,24 +44,44 @@
             </div>
         </div>
     </div>
-    <div class="modal">
+    <div class="modal" id="taskModal">
         <div class="modal-background">
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Modal title</p>
+                    <p class="modal-card-title">Nueva Tarea</p>
                     <button class="delete" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
                     <!-- Content ... -->
+                    <form id="newTask">
+                        <!-- Campo Nombre -->
+                        <div class="field">
+                            <label class="label">Nombre</label>
+                            <div class="control">
+                            <input class="input" type="text" name="nombre" placeholder="Nombre tarea" required>
+                            </div>
+                        </div>
+                        <!-- Campo Mensaje -->
+                        <div class="field">
+                            <label class="label">Descripción</label>
+                            <div class="control">
+                            <textarea class="textarea" name="desc" placeholder="Escribe la descripción" required></textarea>
+                            </div>
+                        </div>
+                        <!-- Botón Enviar -->
+                        <div class="field">
+                            <div class="control">
+                            <button class="button is-primary" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
                 </section>
-                <footer class="modal-card-foot">
-                    <div class="buttons">
-                    <button class="button is-success">Save changes</button>
-                    <button class="button">Cancel</button>
-                    </div>
-                </footer>
             </div>
         </div>
       </div>
+      <div id="popover" class="popover">
+        <p>Nueva Tarea.</p>
+      </div>
+      <script src="./assets/js/app.js"></script>
   </body>
 </html>
