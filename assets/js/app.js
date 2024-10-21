@@ -2,9 +2,17 @@
 const popoverButton = document.getElementById("popover-button");
 const popover = document.getElementById("popover");
 const modal = document.getElementById("taskModal");
+const changeName = document.getElementsByClassName("modal-card-title")[0];
 const form = document.getElementById("newTask");
 const tbody = document.querySelector("tbody");
 const close = document.querySelectorAll(".delete");
+const btn = document.querySelector(".save");
+let isEditing = false;
+let editingTaskId = "";
+
+function genarateId() {
+  return "-" + Math.random().toString(36).substring(2, 9);
+}
 
 // Manejar el clic en el botón para mostrar/ocultar el popover
 popoverButton.addEventListener("mouseover", () => {
@@ -24,11 +32,15 @@ document.addEventListener("mouseover", (event) => {
 // funcion para abrir el modal
 popoverButton.addEventListener("click", () => {
   modal.classList.add("is-active");
+  changeName.innerHTML = "Nueva Tarea";
+  isEditing = false;
+  form.reset();
+  btn.innerHTML = "Guardar";
 });
 
 // Boton para cerrar el modal
-close.forEach((button) => {
-  button.addEventListener("click", () => {
+close.forEach((btn) => {
+  btn.addEventListener("click", () => {
     modal.classList.remove("is-active");
   });
 });
@@ -42,20 +54,30 @@ function getLocalstorage() {
             <td>${task.name}</td>
             <td>${task.desc}</td>
             <td>
-                <button id="editTask" class="button is-success">
+                <button class="editTask button is-success">
                     <span class="icon">
                         <i class="fas fa-pen"></i>
                     </span>
                 </button>
-                <button id="deleteTask" class="button is-danger">
+                <button class="deleteTask button is-danger">
                     <span class="icon">
                         <i class="fas fa-trash"></i>
                     </span>
                 </button>
             </td>`;
-    const deleteBtn = newRow.querySelector("#deleteTask");
+    const deleteBtn = newRow.querySelector(".deleteTask");
     deleteBtn.addEventListener("click", () => {
-      removeTask(task.name);
+      removeTask(task.id);
+    });
+    const editBtn = newRow.querySelector(".editTask");
+    editBtn.addEventListener("click", () => {
+      modal.classList.add("is-active");
+      changeName.innerHTML = "Modificar Tarea";
+      form.nombre.value = task.name;
+      form.desc.value = task.desc;
+      btn.innerHTML = "Modificar";
+      isEditing = true;
+      editingTaskId = task.id;
     });
     tbody.appendChild(newRow);
   });
@@ -64,6 +86,7 @@ function getLocalstorage() {
 function saveLocalstorage(nameT, descT) {
   let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
   let task = {
+    id: genarateId(),
     name: nameT,
     desc: descT,
   };
@@ -71,9 +94,21 @@ function saveLocalstorage(nameT, descT) {
   localStorage.setItem("listTask", JSON.stringify(listTask));
 }
 
-function removeTask(taskName) {
+function removeTask(taskId) {
   let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
-  listTask = listTask.filter((task) => task.name !== taskName);
+  listTask = listTask.filter((task) => task.id !== taskId);
+  localStorage.setItem("listTask", JSON.stringify(listTask));
+  getLocalstorage();
+}
+
+function editTask(taskName, taskDesc) {
+  let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
+  listTask = listTask.map((task) => {
+    if (task.id === editingTaskId) {
+      return { id: task.id, name: taskName, desc: taskDesc };
+    }
+    return task;
+  });
   localStorage.setItem("listTask", JSON.stringify(listTask));
   getLocalstorage();
 }
@@ -82,7 +117,11 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   const name = form.nombre.value.trim();
   const desc = form.desc.value.trim();
-  saveLocalstorage(name, desc);
+  if (isEditing) {
+    editTask(name, desc);
+  } else {
+    saveLocalstorage(name, desc);
+  }
 
   // Cerrar el modal después de agregar la tarea
   taskModal.classList.remove("is-active");
