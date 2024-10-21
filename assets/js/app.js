@@ -42,17 +42,21 @@ function getLocalstorage() {
             <td>${task.name}</td>
             <td>${task.desc}</td>
             <td>
-                <button id="popover-button" class="button is-danger">
-                    <span class="icon">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                </button>
-                <button id="popover-button" class="button is-success">
+                <button id="editTask" class="button is-success">
                     <span class="icon">
                         <i class="fas fa-pen"></i>
                     </span>
                 </button>
+                <button id="deleteTask" class="button is-danger">
+                    <span class="icon">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                </button>
             </td>`;
+    const deleteBtn = newRow.querySelector("#deleteTask");
+    deleteBtn.addEventListener("click", () => {
+      removeTask(task.name);
+    });
     tbody.appendChild(newRow);
   });
 }
@@ -65,6 +69,13 @@ function saveLocalstorage(nameT, descT) {
   };
   listTask.push(task);
   localStorage.setItem("listTask", JSON.stringify(listTask));
+}
+
+function removeTask(taskName) {
+  let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
+  listTask = listTask.filter((task) => task.name !== taskName);
+  localStorage.setItem("listTask", JSON.stringify(listTask));
+  getLocalstorage();
 }
 
 form.addEventListener("submit", (e) => {
