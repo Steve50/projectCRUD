@@ -11,7 +11,7 @@ let isEditing = false;
 let editingTaskId = "";
 
 function genarateId() {
-  return "-" + Math.random().toString(36).substring(2, 9);
+  return Math.floor(Math.random() * 1000000);
 }
 
 // funcion para abrir el modal
@@ -89,13 +89,20 @@ function saveLocalstorage(nameT, descT) {
   };
   listTask.push(task);
   localStorage.setItem("listTask", JSON.stringify(listTask));
+  if (listTask.length === 1) {
+    location.reload();
+  }
 }
 
 function removeTask(taskId) {
   let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
   listTask = listTask.filter((task) => task.id !== taskId);
   localStorage.setItem("listTask", JSON.stringify(listTask));
-  getLocalstorage();
+  if (listTask.length === 0) {
+    location.reload();
+  } else {
+    getLocalstorage();
+  }
 }
 
 function editTask(taskName, taskDesc) {
