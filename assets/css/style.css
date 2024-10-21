@@ -24,3 +24,7 @@
 .popover.is-active {
   display: block;
 }
+.has-text-centered {
+  font-size: 50px;
+  font-weight: bold;
+}

@@ -14,21 +14,6 @@ function genarateId() {
   return "-" + Math.random().toString(36).substring(2, 9);
 }
 
-// Manejar el clic en el botón para mostrar/ocultar el popover
-popoverButton.addEventListener("mouseover", () => {
-  popover.classList.toggle("is-active");
-});
-
-// Opción para cerrar el popover al hacer clic fuera de él
-document.addEventListener("mouseover", (event) => {
-  if (
-    !popoverButton.contains(event.target) &&
-    !popover.contains(event.target)
-  ) {
-    popover.classList.remove("is-active");
-  }
-});
-
 // funcion para abrir el modal
 popoverButton.addEventListener("click", () => {
   modal.classList.add("is-active");
@@ -47,40 +32,52 @@ close.forEach((btn) => {
 
 function getLocalstorage() {
   let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
-  tbody.innerHTML = "";
-  listTask.forEach((task) => {
-    const newRow = document.createElement("tr");
-    newRow.innerHTML = `
-            <td>${task.name}</td>
-            <td>${task.desc}</td>
-            <td>
-                <button class="editTask button is-success">
-                    <span class="icon">
-                        <i class="fas fa-pen"></i>
-                    </span>
-                </button>
-                <button class="deleteTask button is-danger">
-                    <span class="icon">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                </button>
-            </td>`;
-    const deleteBtn = newRow.querySelector(".deleteTask");
-    deleteBtn.addEventListener("click", () => {
-      removeTask(task.id);
+  if (listTask.length > 0) {
+    listTask.forEach((task) => {
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+              <td>${task.name}</td>
+              <td>${task.desc}</td>
+              <td>
+                  <button class="editTask button is-success">
+                      <span class="icon">
+                          <i class="fas fa-pen"></i>
+                      </span>
+                  </button>
+                  <button class="deleteTask button is-danger">
+                      <span class="icon">
+                          <i class="fas fa-trash"></i>
+                      </span>
+                  </button>
+              </td>`;
+      const deleteBtn = newRow.querySelector(".deleteTask");
+      deleteBtn.addEventListener("click", () => {
+        removeTask(task.id);
+      });
+      const editBtn = newRow.querySelector(".editTask");
+      editBtn.addEventListener("click", () => {
+        modal.classList.add("is-active");
+        changeName.innerHTML = "Modificar Tarea";
+        form.nombre.value = task.name;
+        form.desc.value = task.desc;
+        btn.innerHTML = "Modificar";
+        isEditing = true;
+        editingTaskId = task.id;
+      });
+      tbody.appendChild(newRow);
     });
-    const editBtn = newRow.querySelector(".editTask");
-    editBtn.addEventListener("click", () => {
-      modal.classList.add("is-active");
-      changeName.innerHTML = "Modificar Tarea";
-      form.nombre.value = task.name;
-      form.desc.value = task.desc;
-      btn.innerHTML = "Modificar";
-      isEditing = true;
-      editingTaskId = task.id;
-    });
-    tbody.appendChild(newRow);
-  });
+  } else {
+    const noTasksRow = document.createElement("tr");
+    const noTasksCell = document.createElement("td");
+
+    // Configurar la celda para mostrar el mensaje centrado y abarcar todas las columnas
+    noTasksCell.setAttribute("colspan", "3"); // Abarcar 3 columnas (ajústalo según tu tabla)
+    noTasksCell.classList.add("has-text-centered"); // Centramos el texto
+    noTasksCell.textContent = "No hay tareas disponibles.";
+
+    noTasksRow.appendChild(noTasksCell); // Agregar la celda a la fila
+    tbody.appendChild(noTasksRow); // Agregar la fila al tbody
+  }
 }
 
 function saveLocalstorage(nameT, descT) {
