@@ -3,85 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
 
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
     />
-    <title>Document</title>
+    <title>Tareas</title>
   </head>
-  <body></body>
+  <body onload="getLocalstorage()">
     <div class="container">
-        <div class="content">
-            <div class="card">
-                <article>
-                    <button id="popover-button" class="button is-info is-pulled-right">
-                        <span class="icon">
-                            <i class="fas fa-plus"></i>
-                        </span></button>
-                </article>
-                <article>
-                    <table class="table full-width-table">
-                        <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                        </tfoot>
-                        <tbody></tbody>
-                    </table>
-                </article>
-            </div>
+      <div class="content">
+        <div class="card">
+          <article>
+            <button id="popover-button" class="button is-info is-pulled-right">
+              <span class="icon">
+                <i class="fas fa-plus"></i>
+              </span>
+            </button>
+          </article>
+          <article>
+            <table class="table full-width-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody></tbody>
+            </table>
+          </article>
         </div>
+      </div>
     </div>
     <div class="modal" id="taskModal">
-        <div class="modal-background">
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Nueva Tarea</p>
-                    <button class="delete" aria-label="close"></button>
-                </header>
-                <section class="modal-card-body">
-                    <!-- Content ... -->
-                    <form id="newTask">
-                        <!-- Campo Nombre -->
-                        <div class="field">
-                            <label class="label">Nombre</label>
-                            <div class="control">
-                            <input class="input" type="text" name="nombre" placeholder="Nombre tarea" required>
-                            </div>
-                        </div>
-                        <!-- Campo Mensaje -->
-                        <div class="field">
-                            <label class="label">Descripción</label>
-                            <div class="control">
-                            <textarea class="textarea" name="desc" placeholder="Escribe la descripción" required></textarea>
-                            </div>
-                        </div>
-                        <!-- Botón Enviar -->
-                        <div class="field">
-                            <div class="control">
-                            <button class="button is-primary" type="submit">Guardar</button>
-                            </div>
-                        </div>
-                    </form>
-                </section>
-            </div>
+      <div class="modal-background">
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Nueva Tarea</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+            <form id="newTask">
+              <!-- Campo Nombre -->
+              <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    name="nombre"
+                    placeholder="Nombre tarea"
+                    required
+                  />
+                </div>
+              </div>
+              <!-- Campo Mensaje -->
+              <div class="field">
+                <label class="label">Descripción</label>
+                <div class="control">
+                  <textarea
+                    class="textarea"
+                    name="desc"
+                    placeholder="Escribe la descripción"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              <!-- Botón Enviar -->
+              <div class="field">
+                <div class="control">
+                  <button class="button is-primary" type="submit">
+                    Guardar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </section>
         </div>
       </div>
-      <div id="popover" class="popover">
-        <p>Nueva Tarea.</p>
-      </div>
-      <script src="./assets/js/app.js"></script>
+    </div>
+    <div id="popover" class="popover">
+      <p>Nueva Tarea.</p>
+    </div>
+    <script src="./assets/js/app.js"></script>
   </body>
 </html>

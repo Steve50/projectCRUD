@@ -3,7 +3,7 @@ const popoverButton = document.getElementById("popover-button");
 const popover = document.getElementById("popover");
 const modal = document.getElementById("taskModal");
 const form = document.getElementById("newTask");
-const body = document.querySelector("tbody");
+const tbody = document.querySelector("tbody");
 const close = document.querySelectorAll(".delete");
 
 // Manejar el clic en el botón para mostrar/ocultar el popover
@@ -31,4 +31,52 @@ close.forEach((button) => {
   button.addEventListener("click", () => {
     modal.classList.remove("is-active");
   });
+});
+
+function getLocalstorage() {
+  let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
+  tbody.innerHTML = "";
+  listTask.forEach((task) => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+            <td>${task.name}</td>
+            <td>${task.desc}</td>
+            <td>
+                <button id="popover-button" class="button is-danger">
+                    <span class="icon">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                </button>
+                <button id="popover-button" class="button is-success">
+                    <span class="icon">
+                        <i class="fas fa-pen"></i>
+                    </span>
+                </button>
+            </td>`;
+    tbody.appendChild(newRow);
+  });
+}
+
+function saveLocalstorage(nameT, descT) {
+  let listTask = JSON.parse(localStorage.getItem("listTask")) || [];
+  let task = {
+    name: nameT,
+    desc: descT,
+  };
+  listTask.push(task);
+  localStorage.setItem("listTask", JSON.stringify(listTask));
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = form.nombre.value.trim();
+  const desc = form.desc.value.trim();
+  saveLocalstorage(name, desc);
+
+  // Cerrar el modal después de agregar la tarea
+  taskModal.classList.remove("is-active");
+
+  // Limpiar el formulario
+  form.reset();
+  getLocalstorage();
 });
